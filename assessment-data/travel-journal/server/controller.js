@@ -11,6 +11,14 @@ const sequelize = new Sequelize(CONNECTION_STRING , {
     }
 });
 module.exports = {
+    getCountries: (req, res) => {
+        sequelize.query(`select a.country_id, a.name
+        from cc_countries a
+        join cc_country ea on a.country_id = ea.country_id
+        join cc_city e on e.city_id = ea.city_id;`)
+            .then(dbRes => res.status(200).send(dbRes[0]))
+            .catch(err => console.log(err))
+    },
     seed: (req, res) => {
         sequelize.query(`
             drop table if exists cities;
