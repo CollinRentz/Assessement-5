@@ -12,10 +12,9 @@ const sequelize = new Sequelize(CONNECTION_STRING , {
 });
 module.exports = {
     getCountries: (req, res) => {
-        sequelize.query(`select a.country_id, a.name
-        from cc_countries a
-        join cc_country ea on a.country_id = ea.country_id
-        join cc_city e on e.city_id = ea.city_id;`)
+        sequelize.query(`
+        select country_id, name
+        from countries;`)
             .then(dbRes => res.status(200).send(dbRes[0]))
             .catch(err => console.log(err))
     },
@@ -29,7 +28,7 @@ module.exports = {
                 name varchar
             );
 
-            CREATE TABLE cities(
+            CREATE TABLE cities (
                 city_id INTEGER PRIMARY KEY,
                 name VARCHAR,
                 rating INTEGER
