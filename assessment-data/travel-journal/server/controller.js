@@ -1,8 +1,7 @@
 require('dotenv').config()
 
 const Sequelize = require('sequelize');
-let { CONNECTION_STRING } = process.env
-const sequelize = new Sequelize(CONNECTION_STRING , {
+const sequelize = new Sequelize(process.env.CONNECTION_STRING, {
     dialect: 'postgres',
     dialectOptions: {
         ssl: {
@@ -16,7 +15,24 @@ module.exports = {
         select country_id, name
         from countries;`)
             .then(dbRes => res.status(200).send(dbRes[0]))
-            .catch(err => console.log(err))
+            .catch(err => {console.log(err);})
+    },
+    createCity: (req, res) => {
+        sequelize.query(`
+        insert into cities(name, rating, countryId)
+        values (${nextName}, ${nextRating} ${countryId}),
+        (${nextName}, ${nextRating} ${countryId});`)
+            .then(dbRes => res.status(200).send(dbRes[0]))
+            .catch(err => {console.log(err);})
+    }, 
+    getCities: (req,res) => {
+        sequelize.query(`
+        select *
+        from cities and countries
+        join *
+        where country_id = `)
+            .then(dbRes => res.status(200).send(dbRes[0]))
+            .catch(err => {console.log(err);})
     },
     seed: (req, res) => {
         sequelize.query(`
