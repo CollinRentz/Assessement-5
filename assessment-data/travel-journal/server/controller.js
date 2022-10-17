@@ -28,12 +28,31 @@ module.exports = {
     getCities: (req,res) => {
         sequelize.query(`
         select *
-        from cities and countries
-        join *
-        where country_id = `)
+        from cities, countries
+        join cities on city_id = city_id
+        join countries on country_id = country_id
+        join name on city_id = city_id 
+        join name on country_id = country_id
+        join ratings on city_id = city_id 
+        join ratings on country_id = country_id
+        where country_id = city_id`)
             .then(dbRes => res.status(200).send(dbRes[0]))
             .catch(err => {console.log(err);})
     },
+    deleteCity: (req,res) => {
+        city.destroy(`
+            where req.params.id`)
+        .then(function (deletedCity) {
+            if(deletedCity === 1){
+                res.status(200).json({message:"Deleted successfully"});          
+            }
+            else
+            {
+                res.status(404).json({message:"city not found"})
+            }}
+            .then(dbRes => res.status(200).send(dbRes[0]))
+            .catch(err => {console.log(err);})
+        },
     seed: (req, res) => {
         sequelize.query(`
             drop table if exists cities;
